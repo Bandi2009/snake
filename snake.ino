@@ -1,5 +1,12 @@
 #include <LedControl.h>
 
+struct snake
+{
+  int x;
+  int y;
+};
+typedef struct snake snake;
+
 int DIN = 11;
 int CS = 10;
 int CLK = 13;
@@ -13,15 +20,31 @@ void setup()
   lc.setIntensity(0, 0);
   lc.clearDisplay(0);
   Serial.begin(115200);
+  snake kigyo[64];
+  kigyo[0].x = 4;
+  kigyo[0].y = 7;
+  kigyo[1].x = 4;
+  kigyo[1].y = 6;
+  kigyo[2].x = 4;
+  kigyo[2].y = 5;
+  for (size_t i = 0; i < 3; i++)
+  {
+      lc.setLed(0, kigyo[i].x, kigyo[i].y, true);
+  }
 }
 
 void loop()
 {
   static char x = 4, y = 4;
-  static char iranyitas = 'w';
+  static char iranyitas = 'q';
+  static char iranyitas2;
   if (Serial.available())
   {
-    iranyitas = Serial.read();
+    iranyitas2 = Serial.read();
+  }
+  if (iranyitas2 == 'w'|iranyitas2 == 'a'|iranyitas2 =='s'|iranyitas2 =='d')
+  {
+    iranyitas = iranyitas2;
   }
   switch (iranyitas)
   {
@@ -29,7 +52,7 @@ void loop()
     y++;
     break;
   case 'a':
-    x--;
+    x++;
     break;
 
   case 's':
@@ -37,11 +60,10 @@ void loop()
     break;
 
   case 'd':
-    x++;
+    x--;
     break;
 
   default:
-    y++;
     break;
   }
 if (y > 7)
