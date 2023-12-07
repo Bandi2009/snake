@@ -54,7 +54,7 @@ void loop()
 
   for (size_t i = kigyohossza - 1; i > 0; i--)
   {
-    pi[i] = pi[i--];
+    pi[i] = pi[i-1];
   }
 
   pi[0] = iranyitas;
