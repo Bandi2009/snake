@@ -42,11 +42,26 @@ void loop()
 {
   if (Serial.available())
   {
-    char iranyitas2 = Serial.read();
-
-    if (iranyitas2 == 'w' | iranyitas2 == 'a' | iranyitas2 == 's' | iranyitas2 == 'd')
+    switch (Serial.read())
     {
-      iranyitas = iranyitas2;
+    case 'w' | iranyitas != 's':
+      iranyitas = 'w';
+      break;
+    
+    case 'a' | iranyitas != 'd':
+      iranyitas = 'a';
+      break;
+
+    case 's' | iranyitas != 'w':
+      iranyitas = 's';
+      break;
+
+    case 'd' | iranyitas != 'a':
+      iranyitas = 'd';
+      break;
+
+    default:
+      break;
     }
   }
 
@@ -67,7 +82,7 @@ void loop()
       kigyo[p].y++;
       break;
     case 'a':
-      kigyo[p].x++;
+      kigyo[p].x--;
       break;
 
     case 's':
@@ -75,7 +90,7 @@ void loop()
       break;
 
     case 'd':
-      kigyo[p].x--;
+      kigyo[p].x++;
       break;
 
     default:
