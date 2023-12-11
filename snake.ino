@@ -16,7 +16,7 @@ typedef struct snake snake;
 const int MAXKIGXOHOSSZ = 64;
 
 int kigyohossza = 3;
-const unsigned KIGYOLASSUSAG = 500;
+const unsigned KIGYOLASSUSAG = 2000;
 static char iranyitas = 'w';
 snake kigyo[MAXKIGXOHOSSZ];
 static char pi[MAXKIGXOHOSSZ];
@@ -42,26 +42,72 @@ void loop()
 {
   if (Serial.available())
   {
-    switch (Serial.read())
+    if (iranyitas == 'w')
     {
-    case 'w' | iranyitas != 's':
-      iranyitas = 'w';
-      break;
-    
-    case 'a' | iranyitas != 'd':
-      iranyitas = 'a';
-      break;
+      switch (Serial.read())
+      {
+      case 'a':
+        iranyitas = 'a';
+        break;
 
-    case 's' | iranyitas != 'w':
-      iranyitas = 's';
-      break;
+      case 'd':
+        iranyitas = 'd';
+        break;
 
-    case 'd' | iranyitas != 'a':
-      iranyitas = 'd';
-      break;
+      default:
+        break;
+      }
+    }
 
-    default:
-      break;
+    if (iranyitas == 'a')
+    {
+      switch (Serial.read())
+      {
+      case 'w':
+        iranyitas = 'w';
+        break;
+      
+      case 's':
+        iranyitas = 's';
+        break;
+
+      default:
+        break;
+      }
+    }
+
+    if (iranyitas == 's')
+    {
+      switch (Serial.read())
+      {
+      case 'a':
+        iranyitas = 'a';
+        break;
+        
+      case 'd':
+        iranyitas = 'd';
+        break;
+
+      default:
+        break;
+      }
+    }
+
+    if (iranyitas == 'd')
+    {
+      switch (Serial.read())
+      {
+      case 'w':
+        iranyitas = 'w';
+        break;
+      
+      case 's':
+        iranyitas = 's';
+        break;
+        
+      default:
+        break;
+      }
     }
   }
 
