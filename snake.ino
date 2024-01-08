@@ -13,13 +13,49 @@ struct snake
 };
 typedef struct snake snake;
 
-const int MAXKIGXOHOSSZ = 64;
+const int MAXKIGYOHOSSZ = 64;
 
 int kigyohossza = 3;
-const unsigned KIGYOLASSUSAG = 2000;
+const unsigned KIGYOLASSUSAG = 100;
 static char iranyitas = 'w';
-snake kigyo[MAXKIGXOHOSSZ];
-static char pi[MAXKIGXOHOSSZ];
+snake kigyo[MAXKIGYOHOSSZ];
+static char pi[MAXKIGYOHOSSZ];
+snake kaja;
+snake keresett;
+
+bool ellenorzes (snake keresett)
+{
+  for (size_t i = 0; i < kigyohossza; i++)
+  {
+    if (kigyo[i].x == keresett.x && kigyo[i].y == keresett.y)
+    {
+      return true;
+    }
+  }
+  return false;
+}
+
+snake random ()
+{
+  bool talaltunkemarrandomhelyet;
+
+  while (talaltunkemarrandomhelyet =! true)
+  {
+    for (size_t i = 0; i < kigyohossza; i++)
+    {
+      snake randomkordinata;
+
+      randomkordinata.x = random(0,7)
+      randomkordinata.y = random(0,7)
+
+      if(ellenorzes(randomkordinata) == false)
+      {
+        return randomkordinata;
+      } 
+    }
+  }
+}
+
 
 void setup()
 {
@@ -27,11 +63,12 @@ void setup()
   lc.setIntensity(0, 0);
   lc.clearDisplay(0);
   Serial.begin(115200);
+  randomSeed(analogRead(0));
 
   for (int i = kigyohossza - 1; i >= 0; i--)
   {
     kigyo[i].x = 4;
-    kigyo[i].y = 0 + kigyohossza - 1 - i;
+    kigyo[i].y = kigyohossza - 1 - i;
     pi[i] = 'w';
     lc.setLed(0, kigyo[i].x, kigyo[i].y, true);
     delay(KIGYOLASSUSAG);
@@ -66,7 +103,7 @@ void loop()
       case 'w':
         iranyitas = 'w';
         break;
-      
+
       case 's':
         iranyitas = 's';
         break;
@@ -83,7 +120,7 @@ void loop()
       case 'a':
         iranyitas = 'a';
         break;
-        
+
       case 'd':
         iranyitas = 'd';
         break;
@@ -100,11 +137,11 @@ void loop()
       case 'w':
         iranyitas = 'w';
         break;
-      
+
       case 's':
         iranyitas = 's';
         break;
-        
+
       default:
         break;
       }
@@ -115,51 +152,47 @@ void loop()
 
   for (size_t i = kigyohossza - 1; i > 0; i--)
   {
-    pi[i] = pi[i-1];
+    kigyo[i] = kigyo[i - 1];
   }
 
-  pi[0] = iranyitas;
-
-  for (size_t p = 0; p < kigyohossza; p++)
+  switch (iranyitas)
   {
-    switch (pi[p])
-    {
-    case 'w':
-      kigyo[p].y++;
-      break;
-    case 'a':
-      kigyo[p].x--;
-      break;
+  case 'w':
+    kigyo[0].y++;
+    break;
+  case 'a':
+    kigyo[0].x--;
+    break;
 
-    case 's':
-      kigyo[p].y--;
-      break;
+  case 's':
+    kigyo[0].y--;
+    break;
 
-    case 'd':
-      kigyo[p].x++;
-      break;
+  case 'd':
+    kigyo[0].x++;
+    break;
 
-    default:
-      break;
-    }
-
-    if (kigyo[p].y > 7)
-    {
-      kigyo[p].y = 0;
-    }
-    if (kigyo[p].x > 7)
-    {
-      kigyo[p].x = 0;
-    }
-    if (kigyo[p].y < 0)
-    {
-      kigyo[p].y = 7;
-    }
-    if (kigyo[p].x < 0)
-    {
-      kigyo[p].x = 7;
-    }
+  default:
+    break;
   }
+
+  if (kigyo[0].y > 7)
+  {
+    kigyo[0].y = 0;
+  }
+  if (kigyo[0].x > 7)
+  {
+    kigyo[0].x = 0;
+  }
+  if (kigyo[0].y < 0)
+  {
+    kigyo[0].y = 7;
+  }
+  if (kigyo[0].x < 0)
+  {
+    kigyo[0].x = 7;
+  }
+
   lc.setLed(0, kigyo[0].x, kigyo[0].y, true);
   delay(KIGYOLASSUSAG);
 }
